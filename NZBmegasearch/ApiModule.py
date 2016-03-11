@@ -423,8 +423,8 @@ class ApiResponses:
                 human_readable_time = dt1.strftime("%a, %d %b %Y %H:%M:%S")
 
                 niceResults_row = {
-                    # ~ 'url': results[i]['url'],
-                    'url': self.rqurl + self.cgen['revproxy'] + '/warp?x=' + qryforwarp,
+                    'url': results[i]['url'],
+                    #'url': self.rqurl + self.cgen['revproxy'] + '/warp?x=' + qryforwarp,
                     'encodedurl': qryforwarp,
                     'title': results[i]['title'],
                     'filesize': results[i]['size'],

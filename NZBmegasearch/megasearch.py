@@ -1,4 +1,4 @@
-# # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## #    
+# # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## #
 # ~ This file is part of NZBmegasearch by 0byte.
 # ~
 # ~ NZBmegasearch is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 # ~
 # ~ You should have received a copy of the GNU General Public License
 # ~ along with NZBmegasearch.  If not, see <http://www.gnu.org/licenses/>.
-# # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## #    
+# # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## # ## #
 
 import json
 from sets import Set
@@ -407,7 +407,7 @@ class DoParallelSearch:
                 try:
 
                     # ~ print args
-                    
+
                     NZBFilename = 'nzbFromNZNMegaSearch'
                     urlToFetch = args['data']
                     print 'Fetching URL preStrip: "' + urlToFetch + '"'
@@ -415,10 +415,10 @@ class DoParallelSearch:
                     print 'Fetching URL: "' + urlToFetch + '"'
 
 
-                    
-                    # Download file to send to NZBGet 
+
+                    # Download file to send to NZBGet
                     nzbFileRequest = requests.get(urlToFetch, verify=False)
-                    
+
                     nzbcontent64 = standard_b64encode(nzbFileRequest.content)
 
                     # Get Filename from file header
@@ -427,11 +427,11 @@ class DoParallelSearch:
                     NZBFilename = rheaders[idxsfind + 1:len(rheaders)].replace('"', '')
 
 
-                    # Send to NZBGet 
+                    # Send to NZBGet
                     sendToServer = server.append(NZBFilename, nzbcontent64,'',0,False,False,'',0,'SCORE')
-                    
+
                     print 'Send to Server code: ' + str(sendToServer)
-                    
+
                     #myrq = args['data'].replace("warp?", "")
                     #pulrlparse = dict(urlparse.parse_qsl(myrq))
                     #if ('m' in args):
@@ -486,9 +486,9 @@ class DoParallelSearch:
             if (len(self.cgen['sabnzbd_url'])):
                 send2sab_exist = self.sckname
 
-                reportedurl = send2sab_exist + self.cgen['revproxy'] + '/' + args['data']
-                if (self.cgen['revproxy'].find('http') != -1):
-                    reportedurl = self.cgen['revproxy'] + '/' + args['data']
+                reportedurl = args['data']
+                #if (self.cgen['revproxy'].find('http') != -1):
+                #    reportedurl = self.cgen['revproxy'] + '/' + args['data']
 
                 urlq = self.cgen['sabnzbd_url'] + '/api'
                 urlParams = dict(
@@ -496,14 +496,18 @@ class DoParallelSearch:
                     name=reportedurl,
                     apikey=self.cgen['sabnzbd_api'],
                 )
-                if ('cat' in args):
-                    guessed_cat = self.guesscategory(args['cat'].encode('utf-8'))
-                    if (len(guessed_cat)):
-                        urlParams['cat'] = guessed_cat
+                ## add our special cat for links
+                urlParams['cat'] = 'MEGASEARCH'
+
+                #if ('cat' in args):
+                #    guessed_cat = self.guesscategory(args['cat'].encode('utf-8'))
+                #    if (len(guessed_cat)):
+                #        urlParams['cat'] = guessed_cat
 
                 # ~ print urlParams
                 # ~ print urlq
                 try:
+                    log.info(" urlq[%s] params[%s] " % (urlq,urlParams))
                     http_result = requests.get(url=urlq, params=urlParams, verify=False, timeout=15)
                 except Exception as e:
                     log.error('Error contacting SABNZBD ' + str(e))
