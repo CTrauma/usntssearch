@@ -497,7 +497,7 @@ class DoParallelSearch:
                     apikey=self.cgen['sabnzbd_api'],
                 )
                 ## add our special cat for links
-                urlParams['cat'] = 'MEGASEARCH'
+                urlParams['cat'] = 'mega'
 
                 #if ('cat' in args):
                 #    guessed_cat = self.guesscategory(args['cat'].encode('utf-8'))
